@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title %}Book a Car Wash{% endblock %} {%
+block content %}
+<div class="container mt-5">
+  <h1>Book a Car Wash</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="customer_name" class="form-label">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="customer_name"
+        name="customer_name"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="car_make" class="form-label">Car Make</label>
+      <input
+        type="text"
+        class="form-control"
+        id="car_make"
+        name="car_make"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="car_model" class="form-label">Car Model</label>
+      <input
+        type="text"
+        class="form-control"
+        id="car_model"
+        name="car_model"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="car_size" class="form-label">Car Size</label>
+      <select class="form-select" id="car_size" name="car_size" required>
+        <option value="">Choose size</option>
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Book Now</button>
+  </form>
+</div>
+{% endblock %}
