@@ -6,6 +6,27 @@ from django.contrib.auth.models import User
 # Models for user(anyone who is interacting with the app, and wants to book in their car for a wash), Review and Pricing
 
 
+class CarSize(models.Model):
+    SIZE_CHOICES = [
+        ('Small', 'Small'),
+        ('Medium', 'Medium'),
+        ('Large', 'Large'),
+    ]
+
+    size = models.CharField(max_length=20, choices=SIZE_CHOICES, unique=True)
+
+    def __str__(self):
+        return self.size
+
+
+class EstimatedTime(models.Model):
+    size = models.OneToOneField(CarSize, on_delete=models.CASCADE)
+    time_minutes = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.size.size} - {self.time_minutes} minutes"
+
+
 class Customer(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -61,14 +82,26 @@ class Price(models.Model):
 
 
 class Booking(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     car_model = models.ForeignKey(CarModel, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    car_make = models.CharField(max_length=50)
+    car_size = models.ForeignKey(CarSize, on_delete=models.CASCADE)
+    booking_date = models.DateTimeField(auto_now_add=True)
     confirmed = models.BooleanField(default=False)
     attendant = models.ForeignKey(
-        'Attendant', on_delete=models.SET_NULL, null=True, blank=True)
+        'Attendant', on_delete=models.SET_NULL, null=True, blank=True, related_name="assigned_bookings")
 
+    def get_estimated_time(self):
+        return EstimatedTime.objects.get(size=self.car_size).time_minutes
+    
     def get_cost(self):
         return Price.objects.get(size=self.car_model.size).cost
 
-# TODO ADD THE CarSize, and other models later. Done for the day!
+    def __str__(self):
+        return f"Booking for {self.customer.username} - {self.car_make} {self.car_model}"
+
+class Attendant(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
