@@ -56,17 +56,17 @@ def book_carwash(request):
     return render(request, 'booking_form.html', {'form': form})
 
 
-def booking_list(request):
-    bookings = Booking.objects.all()
-    attendants = ['Attendant 1', 'Attendant 2', 'Attendant 3']
-    if request.method == 'POST':
-        booking_id = request.POST.get('booking_id')
-        attendant_name = request.POST.get('attendant')
-        booking = Booking.objects.get(id=booking_id)
-        booking.attendant = attendant_name
-        booking.save()
-        return redirect('booking_list')
-    return render(request, 'booking_list.html', {'bookings': bookings, 'attendants': attendants})
+# def booking_list(request):
+#     bookings = Booking.objects.all()
+#     attendants = ['Attendant 1', 'Attendant 2', 'Attendant 3']
+#     if request.method == 'POST':
+#         booking_id = request.POST.get('booking_id')
+#         attendant_name = request.POST.get('attendant')
+#         booking = Booking.objects.get(id=booking_id)
+#         booking.attendant = attendant_name
+#         booking.save()
+#         return redirect('booking_list')
+#     return render(request, 'booking_list.html', {'bookings': bookings, 'attendants': attendants})
 
 
 @login_required

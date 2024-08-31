@@ -1,0 +1,17 @@
+{%extends 'base.html'} {% block title %} Booking Confirmation {% endblock %} {%
+block content %}
+<div class="container mt-5">
+  <h1>Booking Confirmation</h1>
+  <p>Thank you for booking with Carsh!</p>
+  <p>
+    Your car will be washed in {{ estimated_time }} for a total cost of Ksh {{
+    total_cost }}
+  </p>
+  <button id="confirm_button" class="btn btn-primary">Confirm</button>
+</div>
+<script>
+    document.getElementById('confirm_button').addEventListener('click', function(){
+        alert('Your booking is confirmed!\nEstimated Time: {{estimated_time}}\nTotal Cost: Ksh {{total_cost}}')
+    })
+</script>
+{% endblock %}
